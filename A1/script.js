@@ -19,12 +19,12 @@ function preload() {
     ambientSound = loadSound(
       "audio/ambient.mp3",
       () => console.log("环境音加载成功"),
-      () => console.log("环境音加载失败，将使用纯视觉模式")
+      () => console.log("环境音加载失败，将使用纯视觉模式"),
     );
     noiseSound = loadSound(
       "audio/noise.mp3",
       () => console.log("噪音加载成功"),
-      () => console.log("噪音加载失败，将使用纯视觉模式")
+      () => console.log("噪音加载失败，将使用纯视觉模式"),
     );
   } catch (e) {
     console.log("音频不可用，运行视觉模式");
@@ -147,7 +147,7 @@ function mousePressed() {
   // 点击产生多个扭曲波纹
   for (let i = 0; i < 3; i++) {
     waves.push(
-      new Wave(mouseX + random(-20, 20), mouseY + random(-20, 20), true)
+      new Wave(mouseX + random(-20, 20), mouseY + random(-20, 20), true),
     );
   }
 }
@@ -160,8 +160,8 @@ function keyPressed() {
       width / 2 + random(-50, 50),
       height / 2 + random(-50, 50),
       true,
-      2.0
-    )
+      2.0,
+    ),
   );
 }
 
@@ -254,6 +254,35 @@ class Wave {
     if (this.radius > 30 && random() < 0.3) {
       stroke(this.r, this.g, this.b, currentAlpha * 0.3);
       ellipse(this.x, this.y, this.radius * 1.5);
+    }
+
+    // 在 Wave 类里增加 z 轴属性
+    class Wave {
+      constructor(x, y, isDisturbed = false) {
+        // ... 原有代码保留 ...
+
+        // 新增：z 轴深度 (0-1, 0=最远, 1=最近)
+        this.z = random(0.3, 1.0); // 让波纹有远近层次
+
+        // 根据深度调整属性
+        this.baseSpeed = this.speed * (0.5 + this.z * 0.8); // 近的快，远的慢
+        this.baseAlpha = 100 * this.z; // 近的实，远的淡
+        this.baseRadius = this.maxRadius * (0.7 + this.z * 0.5); // 近的大，远的小
+
+        // 透视效果：远处的略微向上偏移（模拟地平线）
+        this.perspectiveY = this.y * (1 - (1 - this.z) * 0.3);
+      }
+
+      display() {
+        // 用透视后的坐标
+        let displayY = this.y; // 原代码先用 this.y
+
+        // 如果启用透视，可以加：
+        // let displayY = this.y - (1 - this.z) * height * 0.1;
+
+        // 绘制时用 this.z 控制大小和透明度
+        // ... 其余代码
+      }
     }
   }
 }
