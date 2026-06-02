@@ -40,9 +40,7 @@ function setup() {
 
   if (ambientSound && noiseSound) {
     ambientSound.setVolume(0.5);
-    ambientSound.loop();
     noiseSound.setVolume(0);
-    noiseSound.loop();
     audioReady = true;
   }
 
@@ -101,6 +99,15 @@ function drawBackgroundNoise(level) {
 }
 
 function mousePressed() {
+  if (audioReady) {
+    if (!ambientSound.isPlaying()) {
+      ambientSound.loop();
+    }
+    if (!noiseSound.isPlaying()) {
+      noiseSound.loop();
+    }
+  }
+
   lastActiveTime = millis();
   for (let i = 0; i < 3; i++) {
     waves.push(
