@@ -26,11 +26,16 @@
           <span class="project-num">I // WEB INTERACTIVE</span>
         </div>
 
-        <div class="media-wrapper">
-          <iframe
-            src="https://animaeashe.github.io/Private/A1/"
-            allow="autoplay"
-          ></iframe>
+        <div
+          class="media-wrapper"
+          data-src="https://animaeashe.github.io/Private/A1/"
+          data-allow="autoplay"
+          data-label="Day Dream"
+        >
+          <button class="facade" type="button">
+            <span class="facade-play"></span>
+            <span class="facade-hint">Click to launch</span>
+          </button>
         </div>
 
         <div class="project-content">
@@ -59,17 +64,17 @@
           <span class="project-num">II // UNITY WEBGL</span>
         </div>
 
-        <div class="media-wrapper">
-          <iframe
-            frameborder="0"
-            src="https://itch.io/embed-upload/17776201?color=333333"
-            allowfullscreen=""
-            width="1920"
-            height="1080"
-            ><a href="https://animaeashe.itch.io/null"
-              >Play NULL on itch.io</a
-            ></iframe
-          >
+        <div
+          class="media-wrapper"
+          data-src="https://itch.io/embed-upload/17776201?color=333333"
+          data-allow="autoplay; fullscreen"
+          data-fullscreen="true"
+          data-label="NULL"
+        >
+          <button class="facade" type="button">
+            <span class="facade-play"></span>
+            <span class="facade-hint">Click to launch · Unity WebGL</span>
+          </button>
         </div>
 
         <div class="project-content">
@@ -103,18 +108,17 @@
           <span class="project-num">III // PERSUASIVE EXPERIMENT</span>
         </div>
 
-        <div class="media-wrapper">
-          <iframe
-            frameborder="0"
-            src="https://itch.io/embed-upload/17777093?color=333333"
-            allowfullscreen=""
-            width="1920"
-            height="1080"
-            ><a href="https://animaeashe.itch.io/talkback"
-              >Play TalkBack on itch.io</a
-            ></iframe
-          >
-          >
+        <div
+          class="media-wrapper"
+          data-src="https://itch.io/embed-upload/17777093?color=333333"
+          data-allow="autoplay; fullscreen"
+          data-fullscreen="true"
+          data-label="Talk Back!!"
+        >
+          <button class="facade" type="button">
+            <span class="facade-play"></span>
+            <span class="facade-hint">Click to launch · Unity WebGL</span>
+          </button>
         </div>
 
         <div class="project-content">
@@ -142,5 +146,48 @@
         </div>
       </section>
     </main>
+
+    <script>
+      (function () {
+        let active = null;
+
+        function unload(wrapper) {
+          const frame = wrapper.querySelector("iframe");
+          if (frame) frame.remove();
+          wrapper.classList.remove("is-active");
+          wrapper.querySelector(".facade").hidden = false;
+          if (active === wrapper) active = null;
+        }
+
+        function load(wrapper) {
+          if (active && active !== wrapper) unload(active);
+
+          const frame = document.createElement("iframe");
+          frame.src = wrapper.dataset.src;
+          frame.allow = wrapper.dataset.allow || "";
+          if (wrapper.dataset.fullscreen) frame.allowFullscreen = true;
+          wrapper.appendChild(frame);
+
+          wrapper.querySelector(".facade").hidden = true;
+          wrapper.classList.add("is-active");
+
+          let close = wrapper.querySelector(".embed-close");
+          if (!close) {
+            close = document.createElement("button");
+            close.type = "button";
+            close.className = "embed-close";
+            close.setAttribute("aria-label", "Stop");
+            close.textContent = "✕";
+            close.addEventListener("click", () => unload(wrapper));
+            wrapper.appendChild(close);
+          }
+          active = wrapper;
+        }
+
+        document.querySelectorAll(".media-wrapper[data-src]").forEach((w) => {
+          w.querySelector(".facade").addEventListener("click", () => load(w));
+        });
+      })();
+    </script>
   </body>
 </html>
