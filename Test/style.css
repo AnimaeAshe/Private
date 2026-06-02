@@ -1,0 +1,353 @@
+:root {
+  --bg-color: #0c0d10;
+  --text-color: #f5f6f9;
+  --text-muted: #5c6273;
+  --accent-color: #ffffff;
+  --glitch-red: #ff3b30;
+  --glitch-blue: #007aff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+  overflow-y: hidden; /* 初始锁定，等 Opening 点击后解锁 */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* -------------------------------------------------------------
+   SCENE 0: OPENING PORTAL STYLES
+   ------------------------------------------------------------- */
+.portal-scene {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #07080a;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.opening-canvas-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.opening-manifesto {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 650px;
+  padding: 0 20px;
+}
+
+.reveal-line {
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  opacity: 0;
+  letter-spacing: -0.01em;
+  color: #a0a5b5;
+}
+
+/* 优雅的逐行浮现动画 */
+.line-1 {
+  animation: blurRevealIn 1.5s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.line-2 {
+  animation: blurRevealIn 1.5s 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  color: var(--text-color);
+  font-weight: 400;
+}
+
+@keyframes blurRevealIn {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+.enter-vault-btn {
+  margin-top: 40px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-muted);
+  padding: 12px 28px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  opacity: 0;
+  animation: fadeInButton 1s 4s ease forwards;
+  transition: all 0.4s ease;
+}
+
+.enter-vault-btn:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+  letter-spacing: 0.25em;
+}
+
+@keyframes fadeInButton {
+  to {
+    opacity: 1;
+  }
+}
+
+/* -------------------------------------------------------------
+   MAIN SPATIAL EXHIBITION STRUCTURE
+   ------------------------------------------------------------- */
+.meta-header {
+  position: fixed;
+  top: 30px;
+  left: 40px;
+  right: 40px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  font-family: monospace;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.spatial-scene {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10vw 8vw;
+  border-bottom: 1px solid #13161c;
+}
+
+.interaction-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  font-size: 0.65rem;
+  font-family: monospace;
+  color: #3d4352;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.scene-inner {
+  max-width: 900px;
+  width: 100%;
+}
+
+.critique-tag {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 15px;
+}
+
+h2 {
+  font-size: 2.2rem;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  margin-bottom: 30px;
+}
+
+/* -------------------------------------------------------------
+   PROJECT 1: THE REVEAL TEXT SPECS
+   ------------------------------------------------------------- */
+#scene-procedural {
+  cursor: pointer;
+  background: radial-gradient(circle at center, #111318 0%, #0c0d10 100%);
+}
+
+.reflection-block {
+  opacity: 0.1;
+  filter: blur(8px);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 当用户点击时触发 Reveal */
+.reflection-block.revealed {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.fragment-text {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: #c5cbd8;
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+/* -------------------------------------------------------------
+   PROJECT 2: WOBBLE ENGINE & WARNING OVERLAY
+   ------------------------------------------------------------- */
+#scene-spatial {
+  background: #090a0c;
+}
+
+.wobble-text-container {
+  transition:
+    transform 0.1s linear,
+    filter 0.1s ease;
+  will-change: transform;
+}
+
+.wobble-p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #a5adc0;
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+.warning-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 59, 48, 0.04);
+  color: var(--glitch-red);
+  font-family: monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 200;
+  transition: opacity 0.2s ease;
+}
+
+.warning-overlay.active {
+  opacity: 1;
+}
+
+/* -------------------------------------------------------------
+   PROJECT 3: GLITCH DIALOGUE & HALFTONE FRICTION
+   ------------------------------------------------------------- */
+#scene-persuasive {
+  background-color: #0b0c0e;
+}
+
+/* 模拟网点网格过滤器效应 */
+.halftone-active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.015) 1px,
+    transparent 0
+  );
+  background-size: 4px 4px;
+  z-index: 2;
+}
+
+.dialogue-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 60px;
+}
+
+@media (min-width: 768px) {
+  .dialogue-grid {
+    grid-template-columns: 1fr 1.2fr;
+  }
+}
+
+.dialogue-side p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.stable-side p {
+  color: #7e8594;
+}
+
+.aggressive-side {
+  position: relative;
+  border-left: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-left: 30px;
+  transition: all 0.2s ease;
+}
+
+.audio-trigger {
+  color: var(--accent-color);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: crosshair;
+  font-weight: 400;
+}
+
+.audio-trigger:hover {
+  color: var(--glitch-red);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.overlapping-text {
+  position: absolute;
+  top: 40%;
+  left: 10px;
+  font-family: monospace;
+  font-size: 1.8rem;
+  color: rgba(255, 255, 255, 0.02);
+  letter-spacing: 0.4em;
+  font-weight: 900;
+  pointer-events: none;
+  text-shadow:
+    1px 1px 0 rgba(255, 0, 0, 0.2),
+    -1px -1px 0 rgba(0, 0, 255, 0.2);
+}
+
+/* Hover 时右侧反思发生错位混乱 */
+.aggressive-side.glitching {
+  transform: skewX(-4deg) translateX(5px);
+  color: #ffffff;
+  text-shadow:
+    2px 0 0 var(--glitch-red),
+    -2px 0 0 var(--glitch-blue);
+}
+
+.glitch-tag {
+  transition: color 0.2s;
+}
+.aggressive-side.glitching .glitch-tag {
+  color: var(--glitch-red);
+}
+
+/* -------------------------------------------------------------
+   FOOTER TERMINATION
+   ------------------------------------------------------------- */
+.exhibition-footer {
+  padding: 100px 40px 60px 40px;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}

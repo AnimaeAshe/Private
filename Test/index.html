@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Topology of Friction - Final Reflection</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  </head>
+  <body>
+    <audio
+      id="snd-click"
+      src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav"
+      preload="auto"
+    ></audio>
+    <audio
+      id="snd-glitch"
+      src="https://assets.mixkit.co/active_storage/sfx/2448/2448-84.wav"
+      preload="auto"
+    ></audio>
+
+    <div id="scene-opening" class="portal-scene active">
+      <div class="opening-canvas-container" id="canvas-opening"></div>
+      <div class="opening-manifesto">
+        <p class="reveal-line line-1">
+          I began the semester trying to make interactions work.
+        </p>
+        <p class="reveal-line line-2">
+          By the end, I became more interested in how interactions fail.
+        </p>
+        <button type="button" class="enter-vault-btn" id="btn-enter">
+          Click to Fragment the Space
+        </button>
+      </div>
+    </div>
+
+    <div id="exhibition-container" class="hidden">
+      <header class="meta-header">
+        <div class="meta-track">
+          RMIT COMM2747/2591/2589 // CRITICAL ARCHIVE
+        </div>
+        <div class="meta-track">STUDENT REFLECTION // JUN 2026</div>
+      </header>
+
+      <section class="spatial-scene" id="scene-procedural">
+        <div class="interaction-hint">
+          Interaction Specimen 01 // Click anywhere to shatter the calm and
+          reveal reflection
+        </div>
+
+        <div class="scene-inner">
+          <div class="reflection-block active-reveal" id="reveal-text-1">
+            <span class="critique-tag">Critical Analysis I</span>
+            <h2>[Day Dream]: The Illusion of Immediacy</h2>
+            <p class="fragment-text">
+              "I was deeply interested in immediacy during Studio 3. The ripple
+              interaction only existed for a precise moment, leaving no
+              permanent footprint on the canvas."
+            </p>
+            <p class="fragment-text">
+              "But as I progressed, the disappearance became far more important
+              than the visual effect itself. The browser window functioned as a
+              rigid, passive cage. The audience was forced to look
+              <em>at</em> the canvas, never existing <em>within</em> it. It was
+              a simulation of control that ultimately exposed my reliance on
+              flat 2D geometry."
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="spatial-scene" id="scene-spatial">
+        <div class="interaction-hint">
+          Interaction Specimen 02 // Move cursor rapidly. The slower you scroll,
+          the more stable the text.
+        </div>
+
+        <div class="scene-inner">
+          <div class="wobble-text-container" id="wobble-box">
+            <span class="critique-tag">Critical Analysis II</span>
+            <h2>[NULL]: The Geometry of Alienation</h2>
+            <p class="wobble-p">
+              "Transitioning to Unity in Studio 4 forced me to confront a 3D
+              Void. By stripping away traditional gameplay objectives, the
+              architecture itself had to become the narrative framework."
+            </p>
+            <p class="wobble-p">
+              "Yet, the user interaction felt clunky inside the WebGL
+              environment. The harder the player tried to navigate perfectly,
+              the more they failed due to physics friction. The wobbly container
+              you see here mimics that precise frustration: an architecture that
+              resists absolute user control."
+            </p>
+          </div>
+        </div>
+        <div class="warning-overlay" id="speed-warning">
+          SLOW DOWN. FEEL THE FRICTION.
+        </div>
+      </section>
+
+      <section class="spatial-scene halftone-active" id="scene-persuasive">
+        <div class="interaction-hint">
+          Interaction Specimen 03 // Hover over the highlighted words to trigger
+          conversational breakdown.
+        </div>
+
+        <div class="scene-inner dialogue-grid">
+          <div class="dialogue-side stable-side">
+            <span class="critique-tag">Original Thesis</span>
+            <p>
+              "In Studio 5, I originally designed conversational conflict as a
+              balanced game mechanic. I built C# state systems in Unity
+              expecting players to logically solve the argument through
+              structured dialogue keys..."
+            </p>
+          </div>
+
+          <div class="dialogue-side aggressive-side">
+            <span class="critique-tag glitch-tag">Shattered Practice</span>
+            <p>
+              "But eventually, the
+              <span class="audio-trigger" data-pitch="high"
+                >interface itself</span
+              >
+              became aggressive. Communication is not a clean branching tree
+              logic. By making the geometry
+              <span class="audio-trigger" data-pitch="low"
+                >collapse and twist</span
+              >
+              based on movement, <em>Talk Back</em> proved that spatial layout
+              can actively manipulate psychological anxiety."
+            </p>
+            <p class="overlapping-text">
+              THE INTERFACE IS ATTACKING THE CONTENT
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="exhibition-footer">
+        <p>
+          © 2026 Digital Media Studio. Final Project Collection & Critical
+          Analysis.
+        </p>
+        <p style="opacity: 0.3; margin-top: 10px; font-family: monospace">
+          [System Status: Execution Terminated Successfully]
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      // -------------------------------------------------------------
+      // 1. P5.JS BACKGROUND ENGINE FOR SCENE PORTALS
+      // -------------------------------------------------------------
+      let openWaves = [];
+      let backgroundDistortion = 0;
+
+      const s = (p) => {
+        p.setup = () => {
+          let cnv = p.createCanvas(p.windowWidth, p.windowHeight);
+          cnv.parent("canvas-opening");
+          p.noFill();
+        };
+
+        p.draw = () => {
+          p.background(12, 13, 16, 30); // 柔和拖尾
+
+          // 自动产生微弱涟漪
+          if (p.frameCount % 50 === 0) {
+            openWaves.push({
+              x: p.random(p.width),
+              y: p.random(p.height),
+              r: 0,
+              a: 150,
+            });
+          }
+
+          // 鼠标移动产生轻微噪点拖尾
+          if (p.mouseIsPressed || p.movedX !== 0) {
+            p.stroke(255, 255, 255, 40);
+            p.ellipse(p.mouseX, p.mouseY, p.random(5, 20));
+          }
+
+          // 渲染开场涟漪
+          for (let i = openWaves.length - 1; i >= 0; i--) {
+            let w = openWaves[i];
+            w.r += 1.5;
+            w.a -= 1.2;
+            p.stroke(255, 255, 255, w.a);
+            p.strokeWeight(0.5);
+            p.ellipse(w.x, w.y, w.r);
+            if (w.a <= 0) openWaves.splice(i, 1);
+          }
+        };
+
+        p.windowResized = () => {
+          p.resizeCanvas(p.windowWidth, p.windowHeight);
+        };
+      };
+      new p5(s);
+
+      // -------------------------------------------------------------
+      // 2. SCENE TRANSITION & INTERACTION MECHANISMS
+      // -------------------------------------------------------------
+      const btnEnter = document.getElementById("btn-enter");
+      const sceneOpening = document.getElementById("scene-opening");
+      const exhibitionContainer = document.getElementById(
+        "exhibition-container",
+      );
+      const sndClick = document.getElementById("snd-click");
+      const sndGlitch = document.getElementById("snd-glitch");
+
+      // Opening 点击切入展厅
+      btnEnter.addEventListener("click", () => {
+        sndClick.play();
+        sceneOpening.style.transform = "translateY(-100vh)";
+        sceneOpening.style.opacity = "0";
+        setTimeout(() => {
+          sceneOpening.classList.remove("active");
+          exhibitionContainer.classList.remove("hidden");
+          document.body.style.overflowY = "auto"; // 允许滚动
+        }, 600);
+      });
+
+      // PROJECT 1: 点击画布逐渐 Reveal 文本
+      const scene1 = document.getElementById("scene-procedural");
+      const revealText1 = document.getElementById("reveal-text-1");
+      scene1.addEventListener("click", () => {
+        sndClick.currentTime = 0;
+        sndClick.play();
+        revealText1.classList.toggle("revealed");
+      });
+
+      // PROJECT 2: 滚动速度监控 (SLOW DOWN) & Wobble 扭曲
+      const wobbleBox = document.getElementById("wobble-box");
+      const speedWarning = document.getElementById("speed-warning");
+      let lastScrollTop = 0;
+      let scrollTimeout;
+
+      window.addEventListener("scroll", () => {
+        let st = window.pageYOffset || document.documentElement.scrollTop;
+        let speed = Math.abs(st - lastScrollTop);
+
+        // 如果用户 scroll 太快，触发警告和文本激烈变形
+        if (speed > 45) {
+          speedWarning.classList.add("active");
+          wobbleBox.style.transform = `skewX(${speed * 0.4}deg) scale(${1 - speed * 0.002})`;
+          wobbleBox.style.filter = `blur(${speed * 0.1}px)`;
+        } else {
+          // 平时轻微 wobble
+          let time = Date.now() * 0.003;
+          let wX = Math.sin(time) * 3;
+          let wY = Math.cos(time) * 2;
+          wobbleBox.style.transform = `translate(${wX}px, ${wY}px) rotate(${wX * 0.2}deg)`;
+        }
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          speedWarning.classList.remove("active");
+          wobbleBox.style.transform = "translate(0,0) rotate(0)";
+          wobbleBox.style.filter = "blur(0)";
+        }, 150);
+
+        lastScrollTop = st <= 0 ? 0 : st;
+      });
+
+      // PROJECT 3: HOVER 词汇触发音效与剧烈震动
+      const audioTriggers = document.querySelectorAll(".audio-trigger");
+      const aggressiveSide = document.querySelector(".aggressive-side");
+
+      audioTriggers.forEach((trigger) => {
+        trigger.addEventListener("mouseenter", () => {
+          sndGlitch.currentTime = 0;
+          sndGlitch.play();
+          aggressiveSide.classList.add("glitching");
+          // 随机页面抖动
+          document.body.style.transform = `translate(${Math.random() * 8 - 4}px, ${Math.random() * 8 - 4}px)`;
+        });
+
+        trigger.addEventListener("mouseleave", () => {
+          aggressiveSide.classList.remove("glitching");
+          document.body.style.transform = "translate(0,0)";
+        });
+      });
+    </script>
+  </body>
+</html>
