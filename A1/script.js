@@ -39,7 +39,7 @@ function setup() {
   }, 800);
 
   if (ambientSound && noiseSound) {
-    ambientSound.setVolume(0.5);
+    ambientSound.setVolume(0.3);
     noiseSound.setVolume(0);
     audioReady = true;
   }
@@ -103,9 +103,7 @@ function mousePressed() {
     if (!ambientSound.isPlaying()) {
       ambientSound.loop();
     }
-    if (!noiseSound.isPlaying()) {
-      noiseSound.loop();
-    }
+    noiseSound.play();
   }
 
   lastActiveTime = millis();
