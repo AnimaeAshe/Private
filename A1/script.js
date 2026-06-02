@@ -1,10 +1,9 @@
-let waves = []; // 存储所有波纹
-let distortion = 0; // 扭曲程度 0-1
-let noiseLevel = 0; // 背景噪声程度
-let lastActiveTime = 0; // 上次用户互动时间
-let idleTimeout = 3000; // 3秒无操作后开始恢复
+let waves = [];
+let distortion = 0;
+let noiseLevel = 0;
+let lastActiveTime = 0;
+let idleTimeout = 3000;
 
-// 音频相关
 let ambientSound;
 let noiseSound;
 let audioReady = false;
@@ -29,7 +28,6 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  // 初始化波纹 - 持续产生完美的波纹
   setInterval(() => {
     if (distortion < 0.3) {
       waves.push(new Wave());
@@ -52,7 +50,7 @@ function setup() {
 }
 
 function draw() {
-  background(0, 10, 20); // 深蓝黑
+  background(10, 22, 35);
 
   let now = millis();
   let timeSinceLastActive = now - lastActiveTime;
@@ -102,13 +100,6 @@ function drawBackgroundNoise(level) {
   updatePixels();
 }
 
-function mouseMoved() {
-  lastActiveTime = millis();
-  if (random() < 0.3) {
-    waves.push(new Wave(mouseX, mouseY, true));
-  }
-}
-
 function mousePressed() {
   lastActiveTime = millis();
   for (let i = 0; i < 3; i++) {
@@ -134,9 +125,6 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-// ==========================================
-// 正确融合后的 Wave 类
-// ==========================================
 class Wave {
   constructor(x, y, isDisturbed = false, sizeMultiplier = 1.0) {
     if (x === undefined || y === undefined) {
@@ -152,16 +140,12 @@ class Wave {
       this.y = y;
     }
 
-    // 引入 Z 轴深度 (0.3 = 远处, 1.0 = 近处)
     this.z = random(0.3, 1.0);
 
     this.radius = 5;
-    // 根据深度调整最大半径
     this.maxRadius = random(100, 200) * sizeMultiplier * (0.7 + this.z * 0.5);
-    // 根据深度调整速度 (近快远慢)
     this.speed = random(1, 2) * (0.5 + this.z * 0.8);
 
-    // 基础透明度受 Z 轴影响 (远处的淡)
     this.baseAlpha = 100 * this.z;
     this.alpha = this.baseAlpha;
 
@@ -169,22 +153,20 @@ class Wave {
     this.distortionAmount = isDisturbed ? random(0.3, 0.8) : 0;
 
     if (isDisturbed) {
-      this.r = 200 + random(55);
-      this.g = 100 + random(50);
-      this.b = 150 + random(105);
+      this.r = 230 + random(25);
+      this.g = 140 + random(50);
+      this.b = 70 + random(50);
     } else {
-      this.r = 50 + random(50);
-      this.g = 100 + random(100);
-      this.b = 200 + random(55);
+      this.r = 100 + random(50);
+      this.g = 180 + random(40);
+      this.b = 220 + random(35);
     }
 
-    // 模拟 3D 透视：远处的波纹稍微向上偏移（往地平线靠拢）
     this.displayY = this.y - (1 - this.z) * height * 0.1;
   }
 
   update() {
     this.radius += this.speed;
-    // 使用动态的 baseAlpha 映射透明度
     this.alpha = map(this.radius, 0, this.maxRadius, this.baseAlpha, 0);
 
     if (!this.isDisturbed && distortion > 0.2) {
@@ -194,7 +176,7 @@ class Wave {
 
   display() {
     noFill();
-    strokeWeight(1.5 * this.z); // 远处的线条更细
+    strokeWeight(1.5 * this.z);
 
     let currentAlpha = this.alpha * (1 - noiseLevel * 0.3);
 
@@ -210,7 +192,6 @@ class Wave {
         let rOffset = noise(i * 0.5, frameCount * 0.02) * noiseFactor;
         let r = this.radius + rOffset;
         let x = this.x + cos(angle) * r;
-        // 绘制时使用计算好透视的 displayY
         let y = this.displayY + sin(angle) * r;
         vertex(x, y);
       }
