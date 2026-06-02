@@ -2,9 +2,9 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #030710;
+  background-color: #000000;
   font-family: "Helvetica Neue", sans-serif;
-  color: rgba(244, 211, 94, 0.4);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .instruction {

@@ -48,7 +48,7 @@ function setup() {
 }
 
 function draw() {
-  background(10, 22, 35);
+  background(0);
 
   let now = millis();
   let timeSinceLastActive = now - lastActiveTime;
@@ -160,13 +160,15 @@ class Wave {
     this.distortionAmount = isDisturbed ? random(0.3, 0.8) : 0;
 
     if (isDisturbed) {
-      this.r = 230 + random(25);
-      this.g = 140 + random(50);
-      this.b = 70 + random(50);
+      let grey = 220 + random(35);
+      this.r = grey;
+      this.g = grey;
+      this.b = grey;
     } else {
-      this.r = 100 + random(50);
-      this.g = 180 + random(40);
-      this.b = 220 + random(35);
+      let grey = 220 + random(35);
+      this.r = grey;
+      this.g = grey;
+      this.b = grey;
     }
 
     this.displayY = this.y - (1 - this.z) * height * 0.1;
@@ -183,7 +185,7 @@ class Wave {
 
   display() {
     noFill();
-    strokeWeight(1.5 * this.z);
+    strokeWeight(1.0 * this.z);
 
     let currentAlpha = this.alpha * (1 - noiseLevel * 0.3);
 
