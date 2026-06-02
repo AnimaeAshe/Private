@@ -4,20 +4,20 @@ body {
   overflow: hidden;
   background-color: black;
   font-family: "Helvetica Neue", sans-serif;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.336);
 }
 
 .instruction {
   position: absolute;
   bottom: 30px;
   left: 50%;
+  z-index: 10;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
   transform: translateX(-50%);
   text-align: center;
   font-size: 14px;
   letter-spacing: 2px;
-  z-index: 10;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
 }
 
 .small {
