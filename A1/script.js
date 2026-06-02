@@ -63,10 +63,10 @@ function draw() {
 
   if (audioReady) {
     if (ambientSound) {
-      ambientSound.rate(1 - distortion * 0.3);
+      ambientSound.rate(1);
     }
     if (noiseSound) {
-      noiseSound.setVolume(noiseLevel * 0.3);
+      noiseSound.setVolume(0);
     }
   }
 
