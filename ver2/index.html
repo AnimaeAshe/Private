@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assignment 4:Final Project Reflection</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  </head>
+
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+      <defs>
+        <filter id="vhs-mono-distortion">
+          <feOffset dx="-3" dy="0" in="SourceGraphic" result="shadow-left" />
+          <feOffset dx="2" dy="1" in="SourceGraphic" result="shadow-right" />
+          <feComponentTransfer in="shadow-left" result="mono-left">
+            <feFuncR type="linear" slope="0.45" />
+            <feFuncG type="linear" slope="0.45" />
+            <feFuncB type="linear" slope="0.45" />
+          </feComponentTransfer>
+          <feComponentTransfer in="shadow-right" result="mono-right">
+            <feFuncR type="linear" slope="0.22" />
+            <feFuncG type="linear" slope="0.22" />
+            <feFuncB type="linear" slope="0.22" />
+          </feComponentTransfer>
+          <feBlend
+            mode="lighten"
+            in="mono-left"
+            in2="mono-right"
+            result="mono-split"
+          />
+          <feMerge>
+            <feMergeNode in="mono-split" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+    </svg>
+
+    <div class="crt-hardware-screen-mask"></div>
+
+    <audio
+      id="snd-click"
+      src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav"
+      preload="auto"
+    ></audio>
+    <audio
+      id="snd-glitch"
+      src="https://assets.mixkit.co/active_storage/sfx/2448/2448-84.wav"
+      preload="auto"
+    ></audio>
+
+    <div id="scene-opening" class="portal-scene active">
+      <div class="opening-canvas-container" id="canvas-opening"></div>
+      <div class="opening-noise-layer"></div>
+      <div class="opening-scanlines"></div>
+      <div class="opening-vignette"></div>
+
+      <div class="system-terminal">
+        <p class="system-line boot-1">- DISTURBANCE</p>
+        <p class="system-line boot-2">- IMPOSSIBLE REPETITION</p>
+        <p class="system-line boot-3">- RESISTANCE</p>
+        <p class="system-line boot-4">- MEM_PROJECT_RESTORED</p>
+
+        <div class="opening-manifesto">
+          <p class="reveal-line line-1">
+            Minimal Interactives and Environments:
+          </p>
+          <p class="reveal-line line-2">LIMITATION AND RESTRAINT</p>
+        </div>
+
+        <button type="button" class="enter-vault-btn" id="btn-enter">
+          <span>&gt; PRESS HERE TO CONTINUE </span>
+          <span class="cursor-blink">_</span>
+        </button>
+      </div>
+
+      <div id="crt-shutdown"></div>
+    </div>
+
+    <div id="exhibition-container" class="hidden">
+      <header class="meta-header">
+        <div class="meta-track">RMIT Digital Media Studio</div>
+        <div class="meta-track">
+          Assignment 4:Final Project Reflection // 2026
+        </div>
+      </header>
+
+      <section class="spatial-scene" id="scene-procedural">
+        <div class="interaction-hint">
+          Web Based Interactive Work<br />HTML / CSS / JavaScript
+        </div>
+
+        <div class="scene-inner">
+          <div class="reflection-block active-reveal" id="reveal-text-1">
+            <span class="critique-tag">I // OBSERVER EFFECT</span>
+            <h2>[Day Dream] - The Flow</h2>
+            <p class="fragment-text">
+              Day Dream draws inspiration from the fragile balance between inner
+              tranquility and external disturbances that I often experience late
+              at night.
+              <br />
+              <br />
+              I sought to express a somewhat Zen-like concept: the work is
+              designed as a self-generating environment, a state of “Ma”—a
+              serene, flow-like, meditative calm—which is disrupted upon
+              external intervention.
+              <br />
+              <br />
+              However, a subtle point is that without interaction with the
+              outside world, the self-contained internal state of this
+              environment remains unknown to the outside world and exerts no
+              influence on it.
+              <br />
+              <br />
+              Disturbance to the environment, paradoxically, becomes a necessary
+              condition for perceiving tranquility. When you attempt to observe
+              tranquility, the act of observation itself has already altered it.
+            </p>
+          </div>
+
+          <div class="embed-container slide-down-drawer" id="embed-vault-1">
+            <div class="embed-title-bar">
+              <span>// PROJECT 01 //</span>
+              <button class="close-embed-btn" data-target="embed-vault-1">
+                ✕
+              </button>
+            </div>
+            <div
+              class="media-wrapper"
+              data-src="https://animaeashe.github.io/Private/A1/"
+              data-allow="autoplay"
+            >
+              <button class="facade" type="button">
+                <span class="facade-play"></span>
+                <span class="facade-hint">CLICK TO PLAY</span>
+              </button>
+            </div>
+          </div>
+          <p class="fragment-text">-CLICK TO VIEW MORE-</p>
+        </div>
+      </section>
+
+      <section class="spatial-scene" id="scene-spatial">
+        <div class="interaction-hint">
+          2D Interactive<br />Unity Engine / Click to Draw
+        </div>
+
+        <div class="scene-inner">
+          <div class="wobble-text-container" id="wobble-box">
+            <span class="critique-tag"
+              >II // FROM STATE TO PROCESS: AN EXPLORATION</span
+            >
+            <h2>[NULL] - The Unfinished Circle</h2>
+            <p class="wobble-p">
+              [NULL] is a simple 3-minute digital drawing exercise where viewers
+              are asked to repeatedly trace this perfect circle. But as a human,
+              you can never draw such a perfect image the way a computer can. It
+              was inspired by my own work in digital art—the effort, pain, and
+              anxiety hidden behind the pieces, unseen by others.
+              <br />
+              <br />
+              With each attempt in this process, the lines gradually fade away.
+              Throughout these three minutes, you'll find yourself endlessly
+              revising, feeling anxious, and compulsively tracing. At the same
+              time, mocking comments from the outside world pile on the
+              pressure.
+              <br />
+              <br />
+              But I prefer not to offer an explanation; instead, I hope viewers
+              will derive their own emotions from the interaction. Any emotion
+              is valid—some may find it boring, others may find it baffling, but
+              there will also be those who find a valuable sense of resonance
+              within it.
+            </p>
+
+            <button
+              type="button"
+              class="trigger-embed-btn"
+              data-trigger="embed-vault-2"
+            >
+              CLICK TO LAUNCH
+            </button>
+          </div>
+
+          <div class="embed-container cube-flip-drawer" id="embed-vault-2">
+            <div class="embed-title-bar">
+              <span>// PROJECT 02 //</span>
+              <button class="close-embed-btn" data-target="embed-vault-2">
+                ✕
+              </button>
+            </div>
+            <div
+              class="media-wrapper"
+              data-src="https://itch.io/embed-upload/17776201?color=333333"
+              data-allow="autoplay; fullscreen"
+              data-fullscreen="true"
+            >
+              <button class="facade" type="button">
+                <span class="facade-play"></span>
+                <span class="facade-hint">CLICK TO PLAY · UNITY WEBGL</span>
+              </button>
+            </div>
+
+            <a
+              class="embed-external-link"
+              href="https://animaeashe.itch.io/null"
+              target="_blank"
+            >
+              VIEW ON ITCH.IO
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="spatial-scene halftone-active" id="scene-persuasive">
+        <div class="interaction-hint">
+          2D Halftone Word Game<br />Unity Engine / Click-and-drag interaction /
+          MicroGames
+        </div>
+
+        <div class="scene-inner">
+          <div class="dialogue-grid">
+            <div class="dialogue-side stable-side">
+              <span class="critique-tag"
+                >III // From A Passive Stance to Taking The Initiative</span
+              >
+              <h2>[Talk Back] - Experience Resistance</h2>
+              <p>
+                An Interactive Microgame developed using Unity, with core
+                mechanics centered around language and retaliation.
+              </p>
+            </div>
+
+            <div class="dialogue-side aggressive-side">
+              <span class="critique-tag glitch-tag">Visuals</span>
+              <p>
+                Players who as an employee who, after enduring abuse from
+                colleagues, decides to fight back.
+                <br />
+                <br />
+                Visuals:
+                <span class="audio-trigger" data-pitch="high"
+                  >Halftone, Glitch Effects, Offset Text,
+                </span>
+                to make the player feel
+                <span class="audio-trigger" data-pitch="low"
+                  >oppressive and chaotic</span
+                >
+                .
+              </p>
+            </div>
+          </div>
+
+          <div class="center-action">
+            <button
+              type="button"
+              class="trigger-embed-btn"
+              data-trigger="embed-vault-3"
+            >
+              CLICK TO LAUNCH
+            </button>
+          </div>
+
+          <div
+            class="embed-container glitch-dissolve-drawer"
+            id="embed-vault-3"
+          >
+            <div class="embed-title-bar">
+              <span>// PROJECT 03 //</span>
+              <button class="close-embed-btn" data-target="embed-vault-3">
+                ✕
+              </button>
+            </div>
+            <div
+              class="media-wrapper"
+              data-src="https://itch.io/embed-upload/17777093?color=333333"
+              data-allow="autoplay; fullscreen"
+              data-fullscreen="true"
+            >
+              <button class="facade" type="button">
+                <span class="facade-play"></span>
+                <span class="facade-hint">CLICK TO PLAY · UNITY WEBGL</span>
+              </button>
+            </div>
+
+            <a
+              class="embed-external-link"
+              href="https://animaeashe.itch.io/talkback"
+              target="_blank"
+            >
+              VIEW ON ITCH.IO
+            </a>
+          </div>
+
+          <div class="post-launch-reflection project-3-note">
+            <span class="critique-tag">Overall Review</span>
+
+            <p>
+              This work draws inspiration from the widespread verbal abuse in
+              real life that is often “rationalized.”
+              <br />
+              During the design process, I drew inspiration from the concept in
+              Persuasive Games of using systems to convey an idea, but I aimed
+              to let players experience this emotion directly through
+              interaction.
+              <br />
+            </p>
+
+            <p>
+              This work is also influenced by DIY Games and Microgames. The
+              game's structure is very simple and direct:
+              <br />
+              Move, grab, throw, and fight back—there are no complex progression
+              systems or lengthy narratives. I intended it to be a brief yet
+              intense emotional experience.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="interactive-reflection-sequence">
+        <div class="reflection-fragment active-fragment">
+          <p>
+            Over the course of this semester, my understanding of minimalist
+            interaction and environment has gradually shifted from simply
+            describing a state of existence to expressing it through behavior
+            and interaction.
+          </p>
+
+          <span class="continue-hint">[ CLICK TO CONTINUE ]</span>
+        </div>
+
+        <div class="reflection-fragment">
+          <p>
+            My personal design approach in these three projects also reflects
+            this evolution.
+          </p>
+
+          <span class="continue-hint">[ CLICK TO CONTINUE ]</span>
+        </div>
+
+        <div class="reflection-fragment">
+          <p>
+            DayDream uses noise, along with corresponding sound waves and noise
+            patterns, to express abstract psychological states through
+            audiovisual means, thereby transforming them into tangible sensory
+            experiences.
+          </p>
+
+          <p>
+            However, this work also has significant flaws due to the immaturity
+            of the concept: it is highly passive and lacks environmental
+            immersion.
+          </p>
+
+          <span class="continue-hint">[ CLICK TO CONTINUE ]</span>
+        </div>
+
+        <div class="reflection-fragment">
+          <p>
+            Therefore, in NULL, I designed an interactive format that requires
+            active participation from the user, attempting to express the
+            emotional tension I sought to convey in a way that elicits
+            resonance.
+          </p>
+
+          <p>
+            The limited drawing mechanism and gradually fading traces transform
+            the interaction into repetitive labor, self-correction, and an
+            unattainable perfection.
+          </p>
+
+          <span class="continue-hint">[ CLICK TO CONTINUE ]</span>
+        </div>
+
+        <div class="reflection-fragment">
+          <p>
+            Finally, in Talk Back, I explored a more direct, aggressive, and
+            cathartic emotional process.
+          </p>
+
+          <p>
+            Using the topical issue of workplace bullying as a starting point, I
+            guided participants from merely accepting the designer’s perspective
+            to actively thinking about how to fight back.
+          </p>
+
+          <span class="continue-hint">[ CLICK TO CONTINUE ]</span>
+        </div>
+
+        <div class="reflection-fragment final-fragment">
+          <p>
+            Reflecting on the entire semester, I have become increasingly
+            focused on how to design participants’ interactive processes to
+            evoke emotional responses or convey and explore a concept.
+          </p>
+
+          <p>
+            Compared to traditional interaction design that prioritizes
+            streamlined, stable, and efficient workflows, the very concept of
+            minimalism—with its inherent limitations and restraint—is better
+            suited to heighten participants’ perception of the work’s underlying
+            philosophy.
+          </p>
+
+          <span class="reflection-end">[ END OF ARCHIVE ]</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let systemBootTime = 0;
+      let scanlineNoiseOffset = 0;
+
+      const s = (p) => {
+        p.setup = () => {
+          let cnv = p.createCanvas(p.windowWidth, p.windowHeight);
+          cnv.parent("canvas-opening");
+          p.pixelDensity(1);
+          p.background(3, 3, 3);
+        };
+
+        p.draw = () => {
+          systemBootTime++;
+          scanlineNoiseOffset += 0.025;
+
+          let screenBreathing = p.sin(p.frameCount * 0.018) * 1.4;
+          let currentBg = p.constrain(3 + screenBreathing, 0, 255);
+          p.background(currentBg, currentBg, currentBg, 42);
+
+          let isSignalLoss =
+            systemBootTime < 70 ||
+            systemBootTime % 260 > 248 ||
+            p.random() > 0.992;
+
+          p.loadPixels();
+          for (let i = 0; i < p.pixels.length; i += 32) {
+            let x = (i / 4) % p.width;
+            let y = p.floor(i / 4 / p.width);
+            let n = p.noise(x * 0.006, y * 0.008, scanlineNoiseOffset) * 18;
+
+            if (isSignalLoss) {
+              let glitchLine = p.noise(y * 0.12, p.frameCount * 0.44);
+              if (glitchLine > 0.64) {
+                n = p.random() > 0.48 ? p.random(115, 230) : p.random(0, 12);
+              }
+            }
+
+            p.pixels[i] = n;
+            p.pixels[i + 1] = n;
+            p.pixels[i + 2] = n;
+            p.pixels[i + 3] = isSignalLoss ? 70 : 18;
+          }
+          p.updatePixels();
+
+          p.stroke(255, 255, 255, 5);
+          p.strokeWeight(1);
+
+          let scanSpeed = p.frameCount * 0.38;
+          for (let y = 0; y < p.height; y += 3) {
+            let wave = p.sin(y * 0.052 + scanSpeed) * 1.3;
+            p.line(0, y + wave, p.width, y + wave);
+          }
+
+          if (systemBootTime < 45) {
+            p.noStroke();
+            p.fill(230, 230, 230, 160);
+            let w = p.map(systemBootTime, 0, 45, 8, p.width);
+            p.rect(p.width / 2 - w / 2, p.height / 2, w, 1.5);
+          }
+
+          if (p.random() > 0.986) {
+            p.noStroke();
+            p.fill(255, 255, 255, p.random(14, 38));
+            p.rect(0, p.random(p.height), p.width, p.random(1, 6));
+          }
+        };
+
+        p.windowResized = () => {
+          p.resizeCanvas(p.windowWidth, p.windowHeight);
+        };
+      };
+
+      new p5(s);
+
+      const btnEnter = document.getElementById("btn-enter");
+      const sceneOpening = document.getElementById("scene-opening");
+      const exhibitionContainer = document.getElementById(
+        "exhibition-container",
+      );
+      const sndClick = document.getElementById("snd-click");
+      const sndGlitch = document.getElementById("snd-glitch");
+      const crtShutdown = document.getElementById("crt-shutdown");
+
+      btnEnter.addEventListener("click", () => {
+        sndGlitch.currentTime = 0;
+        sndGlitch.play();
+        crtShutdown.classList.add("active");
+        sceneOpening.classList.add("leaving");
+
+        setTimeout(() => {
+          sceneOpening.style.opacity = "0";
+        }, 420);
+
+        setTimeout(() => {
+          sceneOpening.classList.remove("active");
+          sceneOpening.style.display = "none";
+          exhibitionContainer.classList.remove("hidden");
+          document.body.style.overflowY = "auto";
+        }, 760);
+      });
+
+      function injectIframe(containerId) {
+        const container = document.getElementById(containerId);
+        const wrapper = container.querySelector(".media-wrapper");
+        const facade = wrapper.querySelector(".facade");
+
+        if (!facade || facade.dataset.bound === "true") return;
+
+        facade.dataset.bound = "true";
+
+        facade.addEventListener("click", (e) => {
+          e.stopPropagation();
+
+          if (wrapper.querySelector("iframe")) return;
+
+          sndClick.currentTime = 0;
+          sndClick.play();
+
+          const iframe = document.createElement("iframe");
+          iframe.src = wrapper.dataset.src;
+          iframe.allow = wrapper.dataset.allow || "";
+
+          if (wrapper.dataset.fullscreen) {
+            iframe.allowFullscreen = true;
+          }
+
+          wrapper.appendChild(iframe);
+          facade.hidden = true;
+          wrapper.classList.add("is-playing");
+        });
+      }
+
+      function removeIframe(containerId) {
+        const container = document.getElementById(containerId);
+        const wrapper = container.querySelector(".media-wrapper");
+        const iframe = wrapper.querySelector("iframe");
+        const facade = wrapper.querySelector(".facade");
+
+        if (iframe) iframe.remove();
+
+        if (facade) {
+          facade.hidden = false;
+        }
+
+        wrapper.classList.remove("is-playing");
+      }
+
+      const scene1 = document.getElementById("scene-procedural");
+      const revealText1 = document.getElementById("reveal-text-1");
+      const embed1 = document.getElementById("embed-vault-1");
+
+      scene1.addEventListener("click", (e) => {
+        if (
+          e.target.closest(".close-embed-btn") ||
+          e.target.closest(".media-wrapper")
+        )
+          return;
+
+        sndClick.currentTime = 0;
+        sndClick.play();
+
+        if (!revealText1.classList.contains("revealed")) {
+          revealText1.classList.add("revealed");
+        } else if (!embed1.classList.contains("open")) {
+          embed1.classList.add("open");
+          injectIframe("embed-vault-1");
+        }
+      });
+
+      document.querySelectorAll(".trigger-embed-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+
+          sndClick.currentTime = 0;
+          sndClick.play();
+
+          const targetId = btn.dataset.trigger;
+          const targetContainer = document.getElementById(targetId);
+
+          targetContainer.classList.add("open");
+          injectIframe(targetId);
+        });
+      });
+
+      document.querySelectorAll(".close-embed-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+
+          sndClick.currentTime = 0;
+          sndClick.play();
+
+          const targetId = btn.dataset.target;
+          const targetContainer = document.getElementById(targetId);
+
+          targetContainer.classList.remove("open");
+          setTimeout(() => removeIframe(targetId), 600);
+        });
+      });
+
+      const wobbleBox = document.getElementById("wobble-box");
+
+      let lastScrollTop = 0;
+      let scrollTimeout;
+
+      window.addEventListener("scroll", () => {
+        let st = window.pageYOffset || document.documentElement.scrollTop;
+        let speed = Math.abs(st - lastScrollTop);
+
+        if (speed > 45) {
+          speedWarning.classList.add("active");
+          wobbleBox.style.transform = `skewX(${speed * 0.16}deg) scale(${1 - speed * 0.0007})`;
+          wobbleBox.style.filter = `blur(${speed * 0.035}px)`;
+        } else {
+          let time = Date.now() * 0.003;
+          let wX = Math.sin(time) * 1.2;
+          wobbleBox.style.transform = `translate(${wX}px, 0px) rotate(${wX * 0.08}deg)`;
+        }
+
+        clearTimeout(scrollTimeout);
+
+        scrollTimeout = setTimeout(() => {
+          speedWarning.classList.remove("active");
+          wobbleBox.style.transform = "translate(0,0) rotate(0)";
+          wobbleBox.style.filter = "blur(0)";
+        }, 150);
+
+        lastScrollTop = st <= 0 ? 0 : st;
+      });
+
+      const audioTriggers = document.querySelectorAll(".audio-trigger");
+      const aggressiveSide = document.querySelector(".aggressive-side");
+
+      audioTriggers.forEach((trigger) => {
+        trigger.addEventListener("mouseenter", () => {
+          sndGlitch.currentTime = 0;
+          sndGlitch.play();
+          aggressiveSide.classList.add("glitching");
+          document.body.style.transform = `translate(${Math.random() * 3 - 1.5}px, ${Math.random() * 3 - 1.5}px)`;
+        });
+
+        trigger.addEventListener("mouseleave", () => {
+          aggressiveSide.classList.remove("glitching");
+          document.body.style.transform = "translate(0,0)";
+        });
+      });
+
+      setInterval(
+        () => {
+          if (!sceneOpening.classList.contains("active")) return;
+          sceneOpening.classList.add("micro-glitch");
+          setTimeout(() => {
+            sceneOpening.classList.remove("micro-glitch");
+          }, 90);
+        },
+        Math.floor(Math.random() * 5000) + 5000,
+      );
+      const reflectionFragments = document.querySelectorAll(
+        ".reflection-fragment",
+      );
+
+      reflectionFragments.forEach((fragment, index) => {
+        fragment.addEventListener("click", () => {
+          if (fragment.classList.contains("final-fragment")) return;
+
+          const nextFragment = reflectionFragments[index + 1];
+
+          if (nextFragment) {
+            nextFragment.classList.add("active-fragment");
+
+            sndClick.currentTime = 0;
+            sndClick.play();
+
+            setTimeout(() => {
+              nextFragment.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }, 120);
+          }
+
+          fragment.querySelector(".continue-hint")?.remove();
+        });
+      });
+    </script>
+  </body>
+</html>
