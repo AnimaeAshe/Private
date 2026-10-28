@@ -134,3 +134,8 @@ html:lang(zh-CN) .hero h1[lang="en"] span { font-style: italic; }
 .crop-controls[hidden], .crop-toolbar [hidden] { display: none; }
 .crop-editing .sheet-detail > button { cursor: grab; touch-action: none; outline: 2px dashed #888; outline-offset: -2px; }
 .crop-editing .sheet-detail > button:active { cursor: grabbing; }
+.bilingual-footer { align-items: flex-start; }
+.bilingual-footer > span, .bilingual-footer > a { display: flex; flex-direction: column; gap: .3rem; }
+.bilingual-footer > a { text-align: right; }
+.bilingual-footer .label-zh { color: #484848; font-size: .82rem; letter-spacing: .035em; }
+@media(max-width:760px) { .bilingual-footer > a { text-align: left; } }
