@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111111">
+  <title>TalkBack — Unity WebGL</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #111; color: #eee; font: 14px/1.45 "Segoe UI", Arial, sans-serif; }
+    .player { position: relative; display: grid; width: 100%; height: 100%; place-items: center; overflow: hidden; background: radial-gradient(ellipse at 50% 38%, #292929 0, #191919 42%, #111 77%); }
+    canvas { display: block; width: 100%; height: 100%; object-fit: contain; background: #111; outline: none; }
+    .cover, .loading { position: absolute; inset: 0; display: grid; align-content: center; justify-items: center; padding: 24px; text-align: center; background: radial-gradient(ellipse at 50% 38%, rgba(48,48,48,.78), rgba(16,16,16,.96) 73%); }
+    .cover[hidden], .loading[hidden] { display: none; }
+    .label { margin: 0 0 12px; color: #aaa; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; }
+    h1 { margin: 0; font: 400 clamp(2rem, 6vw, 3.6rem)/1 Georgia, serif; letter-spacing: -.05em; }
+    .start { margin-top: 26px; padding: 11px 18px; border: 1px solid rgba(255,255,255,.5); color: #f4f4f2; background: rgba(255,255,255,.08); font: inherit; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; backdrop-filter: blur(16px); }
+    .start:hover { background: rgba(255,255,255,.18); }
+    .load-track { width: min(260px, 75vw); height: 2px; margin-top: 20px; background: rgba(255,255,255,.2); }
+    .load-progress { width: 0; height: 100%; background: #eee; transition: width .2s ease; }
+    .load-copy { margin: 12px 0 0; color: #aaa; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; }
+    .error { max-width: 340px; margin: 1rem 0 0; color: #ccc; }
+    .external { margin-top: 14px; color: #ddd; font-size: 12px; text-underline-offset: 3px; }
+    @media (max-width: 600px) { .player { min-height: 420px; } }
+  </style>
+</head>
+<body>
+  <main class="player">
+    <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1" aria-label="TalkBack game"></canvas>
+    <section class="cover" id="cover">
+      <p class="label">Unity gameplay · WebGL</p>
+      <h1>TalkBack</h1>
+      <button class="start" id="start" type="button">Start game</button>
+      <a class="external" href="https://play.unity.com/en/games/2ee92f40-ef29-40a2-83d2-dc675efef44d/talkback" target="_blank" rel="noopener noreferrer">Open Unity Play ↗</a>
+    </section>
+    <section class="loading" id="loading" hidden aria-live="polite">
+      <p class="label">Loading Unity</p>
+      <div class="load-track"><div class="load-progress" id="progress"></div></div>
+      <p class="load-copy" id="load-copy">Preparing game</p>
+      <p class="error" id="error" hidden></p>
+      <a class="external" id="error-link" href="https://play.unity.com/en/games/2ee92f40-ef29-40a2-83d2-dc675efef44d/talkback" target="_blank" rel="noopener noreferrer" hidden>Open Unity Play ↗</a>
+    </section>
+  </main>
+  <script>
+    const canvas = document.querySelector('#unity-canvas');
+    const cover = document.querySelector('#cover');
+    const loading = document.querySelector('#loading');
+    const progress = document.querySelector('#progress');
+    const copy = document.querySelector('#load-copy');
+    const error = document.querySelector('#error');
+    let started = false;
+
+    document.querySelector('#start').addEventListener('click', () => {
+      if (started) return;
+      started = true;
+      cover.hidden = true;
+      loading.hidden = false;
+      const build = 'Build';
+      const config = {
+        dataUrl: `${build}/TalkBack-v0.0.3-WebGL.data`,
+        frameworkUrl: `${build}/TalkBack-v0.0.3-WebGL.framework.js`,
+        codeUrl: `${build}/TalkBack-v0.0.3-WebGL.wasm`,
+        streamingAssetsUrl: 'StreamingAssets',
+        companyName: 'Ashe', productName: 'TalkBack', productVersion: '0.1.0',
+        showBanner: (message) => { copy.textContent = message; }
+      };
+      const loader = document.createElement('script');
+      loader.src = `${build}/TalkBack-v0.0.3-WebGL.loader.js`;
+      loader.onload = () => {
+        createUnityInstance(canvas, config, (value) => {
+          progress.style.width = `${Math.round(value * 100)}%`;
+          copy.textContent = `Loading ${Math.round(value * 100)}%`;
+        }).then(() => { loading.hidden = true; })
+          .catch((message) => {
+            copy.hidden = true;
+            error.hidden = false;
+            error.textContent = `This browser could not start the game. ${String(message).slice(0, 150)}`;
+            document.querySelector('#error-link').hidden = false;
+          });
+      };
+      loader.onerror = () => {
+        copy.hidden = true;
+        error.hidden = false;
+        error.textContent = 'The Unity player could not load. Open the game on Unity Play instead.';
+        document.querySelector('#error-link').hidden = false;
+      };
+      document.body.appendChild(loader);
+    });
+  </script>
+</body>
+</html>
