@@ -165,3 +165,10 @@ html:lang(zh-CN) .hero h1[lang="en"] span { font-style: italic; }
 .pagination-kicker { display: block; margin-bottom: 8px; color: #737371; font-size: .68rem; letter-spacing: .12em; }
 .folio-pagination strong { color: #222; font-size: 1.25rem; font-weight: 400; }
 .pagination-arrow { font-size: 2rem; font-weight: 300; }
+.resume-section { padding-top: clamp(44px, 6vw, 80px); }
+.resume-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.resume-actions a { padding: 10px 16px; border: 1px solid var(--line); font-size: .8rem; text-decoration: none; }
+.resume-actions a:hover { background: var(--paper-2); }
+.resume-preview { display: block; width: 100%; height: max(700px, 85vh); border: 1px solid var(--line); background: #dededc; }
+.resume-fallback { margin: 16px 0 0; color: #696967; font-size: .78rem; }
+@media(max-width:560px) { .resume-preview { height: 75vh; min-height: 520px; } }
